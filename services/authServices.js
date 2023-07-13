@@ -1,56 +1,29 @@
-const {
-  User,
-  vaildateUserRegisterUser,
-  vaildateUserLoginUser,
-  generateAuthToken
-} = require("../models/UserSchema");
+const UserModel = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 
-module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
-  const { error } = vaildateUserRegisterUser(req.body);
-  if (error) {
-    res.status(400).json({ message: error.details[0].message });
-  }
+exports.registerUser = asyncHandler(async (req, res) => {
+  const { username, email, password } = req.body;
+  const exist = await UserModel.findOne({ username });
 
-  let user = await User.findOne({ email: req.body.email });
-  if (user) {
-    res.status(400).json({ message: "user already exist" });
-  }
+  exist && res.json({ error: "username already existed" });
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+  !username ||
+    (username.length < 3 &&
+      res.json({
+        error: "username is required and should be at least 6 characters long",
+      }));
 
-  user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: hashedPassword,
-  });
-  await user.save();
-  res.status(201).json({ message: "user created succesfully" });
+  UserModel.create({ username, email, password: hashedPassword });
+  res.json(req.body);
 });
 
-module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
-  const { error } = vaildateUserLoginUser(req.body);
-  if (error) {
-    res.status(400).json({ message: error.details[0].message });
-  }
+exports.loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({email})
+  !user && res.json({error: "user is not in correct"})
 
-  let user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    res.status(400).json({ message: "user is not in correct" });
-  }
-
-  const isPasswordMath = await bcrypt.compare(req.body.password, user.password);
-  if (!isPasswordMath) {
-    res.status(400).json({ message: "username or password wrong" });
-  }
-
-  const token = user.generateAuthToken();
-  res.status(200).json({
-    _id: user.id,
-    isAdmin: user.isAdmin,
-    prodilePhoto: user.prodilePhoto,
-    token,
-  });
-});
+  const isPasswordMatch = bcrypt.compare(password, UserModel.password)
+  isPasswordMatch && res.send("passord match")
+})
