@@ -1,6 +1,7 @@
 const UserModel = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
+const jwt = require("jsonwebtoken");
 
 exports.registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -21,9 +22,20 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
 exports.loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await UserModel.findOne({email})
-  !user && res.json({error: "user is not in correct"})
+  const user = await UserModel.findOne({ email });
+  !user && res.json({ error: "user is not in correct" });
 
-  const isPasswordMatch = bcrypt.compare(password, UserModel.password)
-  isPasswordMatch && res.send("passord match")
-})
+  const isPasswordMatch = bcrypt.compare(password, UserModel.password);
+  isPasswordMatch &&
+    jwt.sign(
+      { email: user.email, username: user.username },
+      process.env.SECRET,
+      {},
+      (err, token) => {
+        if (err) {
+          throw err
+        }
+        res.cookie('token').json(user)
+      }
+    );
+});

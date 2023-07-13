@@ -1,12 +1,16 @@
-const express = require("express");
-const morgan = require("morgan");
-const dotenv = require("dotenv");
+const {
+  express,
+  morgan,
+  dotenv,
+  ProductRoutes,
+  AuthRoutes,
+  UserRoutes,
+  CategoriesRoutes,
+  cookieParser,
+  cors,
+} = require("./imports/require");
 const dbConnection = require("./config/conn");
-const ProductRoutes = require("./Routes/ProductRoutes");
-const AuthRoutes = require("./Routes/AuthRoutes");
-const UserRoutes = require("./Routes/UserRoutes");
-const CategoriesRoutes = require("./Routes/CategoryRoutes");
-const cors = require("cors");
+
 const app = express();
 dotenv.config({ path: "./config.env" });
 
