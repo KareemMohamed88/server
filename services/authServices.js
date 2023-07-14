@@ -10,11 +10,23 @@ exports.registerUser = asyncHandler(async (req, res) => {
   exist && res.json({ error: "username already existed" });
   const hashedPassword = bcrypt.hashSync(password, 10);
 
-  !username ||
-    (username.length < 3 &&
-      res.json({
-        error: "username is required and should be at least 6 characters long",
-      }));
+  if (!username || username.length < 3) {
+    return res.json({
+      error: "username is required",
+    });
+  }
+
+  if (!email) {
+    return res.json({
+      error: "email is required",
+    });
+  }
+
+  if (!password) {
+    return res.json({
+      error: "password is required",
+    });
+  }
 
   UserModel.create({ username, email, password: hashedPassword });
   res.json(req.body);
@@ -25,7 +37,10 @@ exports.loginUser = asyncHandler(async (req, res) => {
   const user = await UserModel.findOne({ email });
   !user && res.json({ error: "user is not in correct" });
 
-  const isPasswordMatch = bcrypt.compare(password, UserModel.password);
+  const isPasswordMatch = bcrypt.compare(password, user.password);
+  if (!isPasswordMatch) {
+    return res.json({ error: "email or password wrong" });
+  }
   isPasswordMatch &&
     jwt.sign(
       { email: user.email, username: user.username },
@@ -33,9 +48,9 @@ exports.loginUser = asyncHandler(async (req, res) => {
       {},
       (err, token) => {
         if (err) {
-          throw err
+          throw err;
         }
-        res.cookie('token').json(user)
+        res.cookie("token").json(user);
       }
     );
 });
