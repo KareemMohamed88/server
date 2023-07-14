@@ -34,13 +34,25 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
 exports.loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  if (!email) {
+    return res.json({
+      error: "email is required",
+    });
+  }
+
+  if (!password) {
+    return res.json({
+      error: "password is required",
+    });
+  }
   const user = await UserModel.findOne({ email });
   !user && res.json({ error: "user is not in correct" });
 
-  const isPasswordMatch = bcrypt.compare(password, user.password);
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
     return res.json({ error: "email or password wrong" });
   }
+
   isPasswordMatch &&
     jwt.sign(
       { email: user.email, username: user.username },
