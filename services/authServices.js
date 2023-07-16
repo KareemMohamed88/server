@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 
 exports.registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
-  const exist = await UserModel.findOne({ username,email, password });
+  const exist = await UserModel.findOne({ username });
 
   exist && res.json({ error: "username already existed" });
   const hashedPassword = bcrypt.hashSync(password, 10);
