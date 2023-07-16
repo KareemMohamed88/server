@@ -2,6 +2,7 @@ const UserModel = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 exports.registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -49,9 +50,6 @@ exports.loginUser = asyncHandler(async (req, res) => {
   !user && res.json({ error: "user is not in correct" });
 
   const isPasswordMatch = await bcrypt.compare(password, user.password);
-  if (!isPasswordMatch) {
-    return res.json({ error: "email or password wrong" });
-  }
 
   isPasswordMatch &&
     jwt.sign(
@@ -62,7 +60,22 @@ exports.loginUser = asyncHandler(async (req, res) => {
         if (err) {
           throw err;
         }
-        res.cookie("token").json(user);
+        res.cookie("token", token).json(user);
       }
     );
+  if (!isPasswordMatch) {
+    res.json({ error: "Passwords not match" });
+  }
+});
+
+exports.getProfile = asyncHandler(async (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, process.env.SECRET, {}, (err, user) => {
+      if (err) throw err;
+      res.json(user);
+    });
+  } else {
+    res.json(null);
+  }
 });

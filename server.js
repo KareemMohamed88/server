@@ -4,7 +4,6 @@ const {
   dotenv,
   ProductRoutes,
   AuthRoutes,
-  UserRoutes,
   CategoriesRoutes,
   cookieParser,
   cors,
@@ -17,6 +16,8 @@ dotenv.config({ path: "./config.env" });
 dbConnection();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser())
+app.use(express.urlencoded({extended: false}))
 if (process.env.ENV_MODE == "development") {
   app.use(morgan("dev"));
   console.log(`mode: ${process.env.ENV_MODE}`);
@@ -26,7 +27,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", AuthRoutes);
-app.use("/api/v1/users", UserRoutes);
 app.use("/api/v1/products", ProductRoutes);
 app.use("/api/v1/categories", CategoriesRoutes);
 
