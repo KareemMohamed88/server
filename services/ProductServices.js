@@ -12,19 +12,19 @@ exports.createProduct = asyncHandler(async (req, res) => {
 //READ
 
 //GET ALL PRODUCTS
-exports.readProducts = asyncHandler(async (req, res, next) => {
+exports.readProducts = asyncHandler(async (req, res) => {
   const product = await ProductModal.find();
   res.status(200).json(product);
 });
 
 //GET ONE PRODUCT BY ID
-exports.findProductById = asyncHandler(async (req, res, next) => {
+exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await ProductModal.findById(id);
   res.status(200).json(product);
 });
 //UPDATE PRODUCT BY ID
-exports.updateProduct = asyncHandler(async (req, res, next) => {
+exports.updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const {
     title,

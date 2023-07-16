@@ -4,5 +4,5 @@ const { registerUser, loginUser, getProfile } = require("../services/authService
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/profile", getProfile)
+router.get("/homepage", getProfile)
 module.exports = router;
