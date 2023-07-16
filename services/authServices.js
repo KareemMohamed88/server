@@ -68,7 +68,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-exports.getProfile = asyncHandler(async (req, res) => {
+exports.getHomePage = asyncHandler(async (req, res) => {
   const { token } = req.cookies;
   if (token) {
     jwt.verify(token, process.env.SECRET, {}, (err, user) => {
