@@ -16,6 +16,11 @@ exports.registerUser = asyncHandler(async (req, res) => {
       error: "username is required",
     });
   }
+  if (username.length < 3) {
+    return res.json({
+      error: "username must letter than 6 words",
+    });
+  }
 
   if (!email) {
     return res.json({
@@ -30,7 +35,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
   }
 
   UserModel.create({ username, email, password: hashedPassword });
-  res.json(req.body);
+  res.json({ message: req.body });
 });
 
 exports.loginUser = asyncHandler(async (req, res) => {
@@ -49,23 +54,46 @@ exports.loginUser = asyncHandler(async (req, res) => {
   const user = await UserModel.findOne({ email });
   !user && res.json({ error: "user is not in correct" });
 
-  const isPasswordMatch = await bcrypt.compare(password, user.password);
+  const isPasswordMatch = bcrypt.compareSync(password, user.password);
 
-  isPasswordMatch &&
-    jwt.sign(
-      { email: user.email, username: user.username },
-      process.env.SECRET,
-      {},
-      (err, token) => {
-        if (err) {
-          throw err;
-        }
-        res.cookie("token", token).json(user);
-      }
-    );
   if (!isPasswordMatch) {
     res.json({ error: "Passwords not match" });
   }
+  const token = jwt.sign({ id: user._id }, process.env.SECRET, {
+    expiresIn: "20s",
+  });
+  res.cookie(String(user.id), token, {
+    path: "/",
+    expires: new Date(Date.now() + 1000 * 10),
+    httpOnly: true,
+    sameSite: "lax",
+  });
+  return res.json({ message: "user loggned in successfully", user, token });
+});
+
+exports.verifyToken = asyncHandler(async (req, res, next) => {
+  const headers = req.headers["authorization"];
+  const token = headers.split(" ")[1];
+  if (!token) {
+    res.status(404).json({ message: "token not found" });
+  }
+  jwt.verify(String(token), process.env.SECRET, (err, user) => {
+    if (err) {
+      return res.status(400).json({ message: "invaild token" });
+    }
+    console.log(user.id);
+    req.id = user.id;
+  });
+  next();
+});
+
+exports.getUser = asyncHandler(async (req, res, next) => {
+  const userId = req.id;
+  const user = await UserModel.findById(userId, "password");
+  if (!user) {
+    return res.status(404).json({ message: "user not found" });
+  }
+  return res.status(200).json({ user });
 });
 
 exports.getHomePage = asyncHandler(async (req, res) => {
