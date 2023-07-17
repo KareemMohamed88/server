@@ -11,7 +11,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
   exist && res.json({ error: "email already existed" });
   const hashedPassword = bcrypt.hashSync(password, 10);
 
-  if (!username || username.length < 3) {
+  if (!username) {
     return res.json({
       error: "username is required",
     });
