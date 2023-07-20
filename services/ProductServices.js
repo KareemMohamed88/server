@@ -13,7 +13,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 //GET ALL PRODUCTS
 exports.readProducts = asyncHandler(async (req, res) => {
-  const product = await ProductModal.find();
+  const product = await ProductModal.find().sort({$natural:-1});
   res.status(200).json(product);
 });
 
@@ -21,10 +21,10 @@ exports.readProducts = asyncHandler(async (req, res) => {
 exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { views } = req.body;
-  const product = await ProductModal.findById(id);
-  product.views + 1;
+  const product = await ProductModal.findByIdAndUpdate(id, {
+    $inc: { views:  0.5 },
+  });
   res.status(200).json(product);
-  await product.save();
 });
 //UPDATE PRODUCT BY ID
 exports.updateProduct = asyncHandler(async (req, res) => {
@@ -77,4 +77,3 @@ exports.searchByTitle = asyncHandler(async (req, res) => {
   });
   res.send(result);
 });
-

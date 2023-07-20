@@ -22,7 +22,7 @@ const ProductSchema = mongoose.Schema(
       type: String,
     },
     views: {
-      type: [Number],
+      type: Number,
       default: 0,
     },
     likes: {
