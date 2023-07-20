@@ -6,7 +6,7 @@ const ProductSchema = mongoose.Schema(
       type: String,
     },
     secondImg: {
-      type: String
+      type: String,
     },
     title: {
       type: String,
@@ -21,9 +21,13 @@ const ProductSchema = mongoose.Schema(
     desc: {
       type: String,
     },
-    views:{
-      type: Number,
-      default: 0
+    views: {
+      type: [Number],
+      default: 0,
+    },
+    likes: {
+      type: [Number],
+      default: 0,
     },
     tags: {
       type: String,
@@ -36,8 +40,8 @@ const ProductSchema = mongoose.Schema(
     },
     categoryBelongTo: {
       type: mongoose.Schema.ObjectId,
-      ref: "Category"
-    }
+      ref: "Category",
+    },
   },
   { timestamps: true }
 );

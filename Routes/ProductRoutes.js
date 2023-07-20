@@ -14,7 +14,7 @@ router
   .route("/:id")
   .get(findProductById)
   .put(updateProduct)
-  .delete(deleteProduct);
+  .delete(deleteProduct)
 
 router.route("/search/:key").get(searchByTitle);
 
