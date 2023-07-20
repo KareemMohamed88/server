@@ -18,9 +18,9 @@ const ProductSchema = mongoose.Schema(
     desc: {
       type: String,
     },
-    sold:{
-      type: [String],
-      default: 0 
+    views:{
+      type: Number,
+      default: 0
     },
     tags: {
       type: String,

@@ -20,8 +20,11 @@ exports.readProducts = asyncHandler(async (req, res) => {
 //GET ONE PRODUCT BY ID
 exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const {views} = req.body
   const product = await ProductModal.findById(id);
   res.status(200).json(product);
+  product.views++
+  await product.save()
 });
 //UPDATE PRODUCT BY ID
 exports.updateProduct = asyncHandler(async (req, res) => {
