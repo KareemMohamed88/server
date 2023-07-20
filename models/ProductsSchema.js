@@ -5,6 +5,9 @@ const ProductSchema = mongoose.Schema(
     cardImage: {
       type: String,
     },
+    secondImg: {
+      type: String
+    },
     title: {
       type: String,
       minLength: [3, "product title to short"],
