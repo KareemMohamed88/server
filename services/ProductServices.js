@@ -22,7 +22,7 @@ exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { views } = req.body;
   const product = await ProductModal.findByIdAndUpdate(id, {
-    $inc: { views:  0.5 },
+    $inc: { views:  1 },
   });
   res.status(200).json(product);
 });

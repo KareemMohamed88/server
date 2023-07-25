@@ -25,10 +25,6 @@ const ProductSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    likes: {
-      type: [Number],
-      default: 0,
-    },
     tags: {
       type: String,
     },
