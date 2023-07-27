@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/", UserVerification);
-app.use("/api/v1/auth", AuthRoutes);
+app.use("/api/v2/auth", AuthRoutes);
 app.use("/api/v1/products", ProductRoutes);
 app.use("/api/v1/categories", CategoriesRoutes);
 
