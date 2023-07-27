@@ -25,7 +25,7 @@ const ProductSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    tags: {
+    tech: {
       type: String,
     },
     livePreviewLink: {
@@ -34,9 +34,8 @@ const ProductSchema = mongoose.Schema(
     getSourceCode: {
       type: String,
     },
-    categoryBelongTo: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Category",
+    category: {
+      type: String,
     },
   },
   { timestamps: true }
