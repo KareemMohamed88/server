@@ -18,7 +18,7 @@ dbConnection();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://theme-pen-server.onrender.com"],
+    origin: ["http://localhost:3000", "https://themepen.vercel.app/login"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
