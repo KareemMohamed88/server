@@ -51,7 +51,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     });
     res
       .status(201)
-      .json({ message: "User logged in successfully", success: true });
+      .json({ message: "User logged in successfully", success: true, user, token });
     next();
   } catch (error) {
     console.error(error);
