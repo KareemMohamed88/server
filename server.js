@@ -15,10 +15,11 @@ const app = express();
 dotenv.config({ path: "./config.env" });
 
 dbConnection();
+const origin = ["http://localhost:3000", "https://themepen.vercel.app"]
 
 app.use(
   cors({
-    origin: ["https://themepen.vercel.app"],
+    origin: origin,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
