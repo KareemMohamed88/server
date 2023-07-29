@@ -19,14 +19,9 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     username,
   });
 
-  const token = createSecretToken(user._id);
-  res.cookie("token", token, {
-    withCredentials: true,
-    httpOnly: false,
-  });
   res
     .status(201)
-    .json({ message: "User signed in successfully", success: true, user, token });
+    .json({ message: "User signed in successfully", success: true, user });
   next();
 });
 
