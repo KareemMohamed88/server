@@ -56,6 +56,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   } catch (error) {
     console.error(error);
   }
+  next();
 });
 
 exports.userVerification = (req, res) => {
