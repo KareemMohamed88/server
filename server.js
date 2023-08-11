@@ -15,7 +15,7 @@ const app = express();
 dotenv.config({ path: "./config.env" });
 
 dbConnection();
-const origin = ["http://localhost:3000", "https://themepen.vercel.app"]
+const origin = ["http://localhost:3000", "https://themepen.vercel.app", "http://127.0.0.1:8080"]
 
 app.use(
   cors({
