@@ -9,6 +9,10 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const { email, password, username } = req.body;
   const existingUser = await UserModel.findOne({ email });
 
+  if ((!email || !password, username)) {
+    return res.json({ message: "All fields are required" });
+  }
+
   existingUser && res.json({ error: "User already exists" });
 
   const hashedPassword = await bcrypt.hashSync(password, 10);
@@ -46,7 +50,12 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     });
     res
       .status(201)
-      .json({ message: "User logged in successfully", success: true, user, token });
+      .json({
+        message: "User logged in successfully",
+        success: true,
+        user,
+        token,
+      });
     next();
   } catch (error) {
     console.error(error);

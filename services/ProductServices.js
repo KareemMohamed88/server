@@ -20,12 +20,14 @@ exports.readProducts = asyncHandler(async (req, res) => {
 //GET ONE PRODUCT BY ID
 exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { views } = req.body;
-  const product = await ProductModal.findByIdAndUpdate(id, {
-    $inc: { views:  1 },
-  });
+  const product = await ProductModal.findById(id);
+  if (!product) {
+    res.status(404).json({message: `no prouct for this ${id}`})
+  }
+  console.log(product.price)
   res.status(200).json(product);
 });
+
 //UPDATE PRODUCT BY ID
 exports.updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;

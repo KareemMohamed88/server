@@ -42,6 +42,14 @@ app.use("/api/v2/auth", AuthRoutes);
 app.use("/api/v1/products", ProductRoutes);
 app.use("/api/v1/categories", CategoriesRoutes);
 
+app.all("*", (req, res, next) => {
+  const err = new Error(`Can't find this route ${req.originalUrl}`)
+  next(err.message)  
+})
+
+app.use((err, req, res, next) => {
+  res.status(400).json({err})
+})
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`http://localhost:${process.env.PORT}`);
