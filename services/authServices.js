@@ -9,7 +9,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const { email, password, username } = req.body;
   const existingUser = await UserModel.findOne({ email });
 
-  if ((!email || !password, username)) {
+  if ((!email || !password, !username)) {
     return res.json({ message: "All fields are required" });
   }
 
