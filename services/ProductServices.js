@@ -24,7 +24,6 @@ exports.findProductById = asyncHandler(async (req, res) => {
   if (!product) {
     res.status(404).json({message: `no prouct for this ${id}`})
   }
-  console.log(product.price)
   res.status(200).json(product);
 });
 
