@@ -15,7 +15,7 @@ const ProductSchema = mongoose.Schema(
     },
     price: {
       type: Number,
-      min: [1, "product price to short"],
+      min: [0, "product price to short"],
       max: [500, "product price to long"],
     },
     desc: {
