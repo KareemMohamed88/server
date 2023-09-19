@@ -7,7 +7,6 @@ const {
   UserVerification,
   CategoriesRoutes,
   cookieParser,
-  nodemailer,
   cors,
 } = require("./imports/require");
 const dbConnection = require("./config/conn");

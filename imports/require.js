@@ -6,7 +6,6 @@ const AuthRoutes = require("../Routes/AuthRoutes");
 const CategoriesRoutes = require("../Routes/CategoryRoutes");
 const UserVerification = require("../Routes/UserVerificationRoutes");
 const cookieParser = require("cookie-parser");
-const nodemailer = require("nodemailer")
 const cors = require("cors")
 
 module.exports = {
@@ -18,6 +17,5 @@ module.exports = {
   UserVerification,
   CategoriesRoutes,
   cookieParser,
-  nodemailer,
   cors,
 };
