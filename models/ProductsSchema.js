@@ -27,7 +27,8 @@ const projectSchema = mongoose.Schema({
   category: {
     type: String,
   },
-});
+},
+{ timestamps: true });
 
 const projectModel = mongoose.model("project", projectSchema)
 
