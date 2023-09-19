@@ -1,11 +1,11 @@
 const asyncHandler = require("express-async-handler");
-const ProductModal = require("../models/ProductsSchema");
+const projectModel = require("../models/ProductsSchema");
 
 //                               PRODUCT CRUD OPRATIONS
 
 //CREATE PRODUCT
 exports.createProduct = asyncHandler(async (req, res) => {
-  const newProduct = new ProductModal(req.body);
+  const newProduct = new projectModel(req.body);
   await newProduct.save();
   res.status(201).json(req.body);
 });
@@ -13,14 +13,14 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 //GET ALL PRODUCTS
 exports.readProducts = asyncHandler(async (req, res) => {
-  const product = await ProductModal.find().sort({$natural:-1});
+  const product = await projectModel.find().sort({$natural:-1});
   res.status(200).json(product);
 });
 
 //GET ONE PRODUCT BY ID
 exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const product = await ProductModal.findById(id);
+  const product = await projectModel.findById(id);
   if (!product) {
     res.status(404).json({message: `no prouct for this ${id}`})
   }
@@ -40,7 +40,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     getSourceCode,
   } = req.body;
 
-  const product = await ProductModal.findOneAndUpdate(
+  const product = await projectModel.findOneAndUpdate(
     { _id: id },
     { title, price, cardImage, summary, tags, livePreviewLink, getSourceCode },
     { title: true },
@@ -62,7 +62,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
 exports.deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const product = await ProductModal.findOneAndDelete(id);
+  const product = await projectModel.findOneAndDelete(id);
 
   if (!product) {
     res.status(400).json({ message: "no product for this id" });
@@ -73,7 +73,7 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
 
 //SEARCH SERVUCES
 exports.searchByTitle = asyncHandler(async (req, res) => {
-  let result = await ProductModal.find({
+  let result = await projectModel.find({
     $or: [{ title: { $regex: req.params.key } }],
   });
   res.send(result);

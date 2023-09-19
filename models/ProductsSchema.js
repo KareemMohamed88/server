@@ -1,44 +1,34 @@
 const mongoose = require("mongoose");
 
-const ProductSchema = mongoose.Schema(
-  {
-    cardImage: {
-      type: String,
-    },
-    secondImg: {
-      type: String,
-    },
-    title: {
-      type: String,
-      minLength: [3, "product title to short"],
-      maxLength: [32, "product title to long"],
-    },
-    price: {
-      type: Number,
-    },
-    desc: {
-      type: String,
-    },
-    views: {
-      type: Number,
-      default: 0,
-    },
-    tech: {
-      type: String,
-    },
-    livePreviewLink: {
-      type: String,
-    },
-    getSourceCode: {
-      type: String,
-    },
-    category: {
-      type: String,
-    },
+const projectSchema = mongoose.Schema({
+  title: {
+    type: String,
+    maxLength: [64, "project name to long"],
+    minLength: [2, "project name to short"],
   },
-  { timestamps: true }
-);
+  price: {
+    type: Number,
+    max: [500, "project price to expensive"],
+    min: [0, "project price to cheap"],
+  },
+  description: {
+    type: String,
+    minLength: [2, "project name to short"],
+  },
+  firstImage: {
+    type: String,
+  },
+  secondImage: {
+    type: String,
+  },
+  technologies: {
+    type: String,
+  },
+  category: {
+    type: String,
+  },
+});
 
-const ProductModal = mongoose.model("products", ProductSchema);
+const projectModel = mongoose.model("project", projectSchema)
 
-module.exports = ProductModal;
+module.exports = projectModel
