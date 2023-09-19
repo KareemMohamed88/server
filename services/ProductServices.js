@@ -13,8 +13,8 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 //GET ALL PRODUCTS
 exports.readProducts = asyncHandler(async (req, res) => {
-  const product = await projectModel.find().sort({$natural:-1});
-  res.status(200).json(product);
+  const project = await projectModel.find().sort({$natural:-1});
+  res.status(200).json(project);
 });
 
 //GET ONE PRODUCT BY ID
