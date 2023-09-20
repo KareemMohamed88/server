@@ -37,7 +37,20 @@ if (process.env.ENV_MODE == "development") {
 }
 
 app.get("/", (req, res) => {
-  res.send("app runed");
+  res.json({
+    app: {
+      status: 200,
+      routes: {
+        UserVerification: "/",
+        auth: "/api/v2/auth",
+        products: "/api/v1/products",
+        categories: "/api/v1/categories",
+      },
+      globalLink: "https://theme-pen-server.onrender.com/",
+      anotherGlobalLink: "https://mushy-turtleneck-shirt-elk.cyclic.app/",
+      frontendApp: "https://themepen.vercel.app/"
+    },
+  });
 });
 
 app.use("/", UserVerification);
