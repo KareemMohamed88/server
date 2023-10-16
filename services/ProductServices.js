@@ -13,7 +13,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 //GET ALL PRODUCTS
 exports.readProducts = asyncHandler(async (req, res) => {
-  const project = await projectModel.find().sort({$natural:-1});
+  const project = await projectModel.find().sort({ $natural: -1 });
   res.status(200).json(project);
 });
 
@@ -22,7 +22,7 @@ exports.findProductById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await projectModel.findById(id);
   if (!product) {
-    res.status(404).json({message: `no prouct for this ${id}`})
+    res.status(404).json({ message: `no prouct for this ${id}` });
   }
   res.status(200).json(product);
 });
@@ -60,15 +60,14 @@ exports.updateProduct = asyncHandler(async (req, res) => {
 });
 //DELETE PRODUCT
 exports.deleteProduct = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  const product = await projectModel.findOneAndDelete(id);
-
-  if (!product) {
-    res.status(400).json({ message: "no product for this id" });
-  } else {
-    res.status(200).json({ data: product });
-  }
+  projectModel.findByIdAndDelete(req.params.id).then((proj) => {
+    if (!projectModel) {
+        return res.status(404)
+    }
+    res.send(proj);
+}).catch((error) => {
+    res.status(500).send(error);
+})
 });
 
 //SEARCH SERVUCES
