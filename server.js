@@ -19,7 +19,8 @@ const origin = [
   "http://localhost:3000",
   "https://themepen.vercel.app",
   "http://127.0.0.1:8080",
-  "http://localhost:3002/"
+  "http://localhost:3002/",
+  "https://themepen-dashboard-k8ax.vercel.app/"
 ];
 
 app.use(
